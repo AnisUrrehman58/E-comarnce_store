@@ -1,0 +1,149 @@
+Index: lib/Servive/wrapper.dart
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/lib/Servive/wrapper.dart b/lib/Servive/wrapper.dart
+--- a/lib/Servive/wrapper.dart	
++++ b/lib/Servive/wrapper.dart	(date 1722783684825)
+@@ -1,35 +1,35 @@
+-// import 'package:e_commerce_store/NavigationMenu/bottom%20_navigation_menu.dart';
+-// import 'package:e_commerce_store/Screens/Login/login_screen.dart';
+-// import 'package:e_commerce_store/Screens/Signup/signup.dart';
+-// import 'package:firebase_auth/firebase_auth.dart';
+-// import 'package:flutter/material.dart';
+-//
+-//
+-// class WrapperState extends StatefulWidget {
+-//   const WrapperState({super.key});
+-//
+-//   @override
+-//   State<WrapperState> createState() => _WrapperStateState();
+-// }
+-//
+-// class _WrapperStateState extends State<WrapperState> {
+-//   @override
+-//   Widget build(BuildContext context) {
+-//     return  Scaffold(
+-//       body: StreamBuilder(
+-//         stream: FirebaseAuth.instance.authStateChanges(),
+-//         builder: (context,snapshot) {
+-//           if(snapshot.hasData) {
+-//             print(snapshot.data);
+-//             if (snapshot.data!.emailVerified) {
+-//               return const BottomNavigationMenu();
+-//             } else {
+-//               return const SignupScreen();
+-//             }
+-//           }else{
+-//             return const LoginScreen();
+-//           }
+-//     }
+-//     ));
+-//   }
+-// }
++import 'package:e_commerce_store/NavigationMenu/bottom%20_navigation_menu.dart';
++import 'package:e_commerce_store/Screens/Login/login_screen.dart';
++import 'package:e_commerce_store/Screens/Signup/signup.dart';
++import 'package:firebase_auth/firebase_auth.dart';
++import 'package:flutter/material.dart';
++
++
++class WrapperState extends StatefulWidget {
++  const WrapperState({super.key});
++
++  @override
++  State<WrapperState> createState() => _WrapperStateState();
++}
++
++class _WrapperStateState extends State<WrapperState> {
++  @override
++  Widget build(BuildContext context) {
++    return  Scaffold(
++      body: StreamBuilder(
++        stream: FirebaseAuth.instance.authStateChanges(),
++        builder: (context,snapshot) {
++          if(snapshot.hasData) {
++            print(snapshot.data);
++            if (snapshot.data!.emailVerified) {
++              return const BottomNavigationMenu();
++            } else {
++              return const SignupScreen();
++            }
++          }else{
++            return const LoginScreen();
++          }
++    }
++    ));
++  }
++}
+Index: lib/Servive/signup_function.dart
+===================================================================
+diff --git a/lib/Servive/signup_function.dart b/lib/Servive/signup_function.dart
+deleted file mode 100644
+--- a/lib/Servive/signup_function.dart	
++++ /dev/null	
+@@ -1,62 +0,0 @@
+-import 'package:e_commerce_store/NavigationMenu/bottom%20_navigation_menu.dart';
+-import 'package:firebase_auth/firebase_auth.dart';
+-import 'package:flutter/material.dart';
+-
+-
+-import '../Screens/Login/login_screen.dart';
+-import '../Screens/home_screen/home_screen.dart';
+-
+-bool login = false;
+-
+-Future<void> signUp(BuildContext context, String email, String password) async {
+-  try {
+-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+-      email: email,
+-      password: password,
+-    );
+-
+-    Navigator.pushReplacement(
+-      context,
+-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+-    );
+-    print('User registered successfully.');
+-  } on FirebaseAuthException catch (e) {
+-    if (e.code == 'weak-password') {
+-      print('The password provided is too weak.');
+-    } else if (e.code == 'email-already-in-use') {
+-      print('The account already exists for that email.');
+-    } else {
+-      print('Registration failed with error code: ${e.code}');
+-    }
+-  } catch (e) {
+-    print('Registration failed with error: $e');
+-  }
+-}
+-
+-Future<void> signIn(BuildContext context, String email, String password) async {
+-  try {
+-    final UserCredential credential =
+-    await FirebaseAuth.instance.signInWithEmailAndPassword(
+-      email: email,
+-      password: password,
+-    );
+-    login = true;
+-    print('User signed in successfully: ${credential.user?.email}');
+-    print('Login status: $login');
+-
+-    Navigator.pushReplacement(
+-      context,
+-      MaterialPageRoute(builder: (context) => const BottomNavigationMenu()),
+-    );
+-  } on FirebaseAuthException catch (e) {
+-    if (e.code == 'user-not-found') {
+-      print('No user found for that email.');
+-    } else if (e.code == 'wrong-password') {
+-      print('Wrong password provided for that user.');
+-    } else {
+-      print('Sign-in failed with error code: ${e.code}');
+-    }
+-  } catch (e) {
+-    print('Sign-in failed with error: $e');
+-  }
+-}
+\ No newline at end of file
